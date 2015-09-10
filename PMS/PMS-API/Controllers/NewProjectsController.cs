@@ -8,6 +8,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using PMS_API.Models;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
 
 namespace PMS_API.Controllers
 {
@@ -40,12 +42,12 @@ namespace PMS_API.Controllers
         // GET: NewProjects/Create
         public ActionResult Create()
         {
-            ViewBag.ApplicationsId = new SelectList(db.Applications, "Id", "Name");
-            ViewBag.ArchitectId = new SelectList(db.Architects, "Id", "FullName");
-            ViewBag.BusinessPartnerId = new SelectList(db.BusinessPartners, "Id", "FullName");
-            ViewBag.FixingTypeId = new SelectList(db.FixingTypes, "Id", "Name");
-            ViewBag.OwnerId = new SelectList(db.Owners, "Id", "FullName");
-            ViewBag.ProjectTypeId = new SelectList(db.ProjectTypes, "Id", "Name");
+            ViewBag.ApplicationsId = new SelectList(db.Applications.AsEnumerable(), "Id", "Name");
+            ViewBag.ArchitectId = new SelectList(db.Architects.ToList(), "Id", "FullName");
+            ViewBag.BusinessPartnerId = new SelectList(db.BusinessPartners.ToList(), "Id", "FullName");
+            ViewBag.FixingTypeId = new SelectList(db.FixingTypes.ToList(), "Id", "Name");
+            ViewBag.OwnerId = new SelectList(db.Owners.ToList(), "Id", "FullName");
+            ViewBag.ProjectTypeId = new SelectList(db.ProjectTypes.ToList(), "Id", "Name");
             return View();
         }
 
@@ -53,23 +55,70 @@ namespace PMS_API.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,ProjectName,City,Street,CommencedOn,ConcludedOn,ArchitectId,BusinessPartnerId,PlanUrl,SectionsUrl,ElevationsUrl,TDImageUrl,AreaPanelCalculationUrl,ConceptsDrawingUrl,OptimizationUrl,ShopDrawingUrl,AnalysisUrl,BOQUrl,InteriorUrl,OwnerId,ProjectTypeId,FixingTypeId,ApplicationsId,TDRenderImageUrl")] NewProject newProject)
+        //[ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create(newProjectModels model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.NewProjects.Add(newProject);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
+                if (ModelState.IsValid)
+                {
+                    NewProject newProject = new NewProject()
+                    {
+                        AnalysisUrl = model.saveFile(Request.Files["AnalysisUrl"], model.ProjectName + "\\Analysis"),
+                        ApplicationsId = model.ApplicationsId,
+                        ArchitectId = model.ArchitectId,
+                        AreaPanelCalculationUrl = model.saveFile(Request.Files["AreaPanelCalculationUrl"], model.ProjectName + "\\AreaPanelCalculation"),
+                        BOQUrl = model.saveFile(Request.Files["BOQUrl"], model.ProjectName + "\\BOQ"),
+                        BusinessPartnerId = model.BusinessPartnerId,
+                        City = model.City,
+                        CommencedOn = model.CommencedOn.ToShortDateString(),
+                        ConceptsDrawingUrl = model.saveFile(Request.Files["ConceptsDrawingUrl"], model.ProjectName + "\\ConceptsDrawing"),
+                        ConcludedOn = model.ConcludedOn.ToShortDateString(),
+                        ElevationsUrl = model.saveFile(Request.Files["ElevationsUrl"], model.ProjectName + "\\Elevations"),
+                        FixingTypeId = model.FixingTypeId,
+                        InteriorUrl = model.saveFile(Request.Files["InteriorUrl"], model.ProjectName + "\\Interior"),
+                        OptimizationUrl = model.saveFile(Request.Files["OptimizationUrl"], model.ProjectName + "\\Optimization"),
+                        OwnerId = model.OwnerId,
+                        PlanUrl = model.saveFile(Request.Files["PlanUrl"], model.ProjectName + "\\Plan"),
+                        ProjectName = model.ProjectName,
+                        ProjectTypeId = model.ProjectTypeId,
+                        SectionsUrl = model.saveFile(Request.Files["SectionsUrl"], model.ProjectName + "\\Sections"),
+                        ShopDrawingUrl = model.saveFile(Request.Files["ShopDrawingUrl"], model.ProjectName + "\\ShopDrawing"),
+                        Street = model.Street,
+                        TDImageUrl = model.saveFile(Request.Files["TDImageUrl"], model.ProjectName + "\\TDImage"),
+                        TDRenderImageUrl = model.saveFile(Request.Files["TDRenderImageUrl"], model.ProjectName + "\\TDRenderImage")
+                    };
+                    db.NewProjects.Add(newProject);
+                    await db.SaveChangesAsync();
+                    ViewBag.ApplicationsId = new SelectList(db.Applications, "Id", "Name", newProject.ApplicationsId);
+                    ViewBag.ArchitectId = new SelectList(db.Architects, "Id", "FullName", newProject.ArchitectId);
+                    ViewBag.BusinessPartnerId = new SelectList(db.BusinessPartners, "Id", "FullName", newProject.BusinessPartnerId);
+                    ViewBag.FixingTypeId = new SelectList(db.FixingTypes, "Id", "Name", newProject.FixingTypeId);
+                    ViewBag.OwnerId = new SelectList(db.Owners, "Id", "FullName", newProject.OwnerId);
+                    ViewBag.ProjectTypeId = new SelectList(db.ProjectTypes, "Id", "Name", newProject.ProjectTypeId);
 
-            ViewBag.ApplicationsId = new SelectList(db.Applications, "Id", "Name", newProject.ApplicationsId);
-            ViewBag.ArchitectId = new SelectList(db.Architects, "Id", "FullName", newProject.ArchitectId);
-            ViewBag.BusinessPartnerId = new SelectList(db.BusinessPartners, "Id", "FullName", newProject.BusinessPartnerId);
-            ViewBag.FixingTypeId = new SelectList(db.FixingTypes, "Id", "Name", newProject.FixingTypeId);
-            ViewBag.OwnerId = new SelectList(db.Owners, "Id", "FullName", newProject.OwnerId);
-            ViewBag.ProjectTypeId = new SelectList(db.ProjectTypes, "Id", "Name", newProject.ProjectTypeId);
-            return View(newProject);
+                    return RedirectToAction("Index");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex is DbEntityValidationException)
+                {
+                    foreach (var validationErrors in ((DbEntityValidationException)ex).EntityValidationErrors)
+                    {
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            Trace.TraceInformation("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                        }
+                    }
+                    //return InternalServerError();
+                }
+
+            }
+            return RedirectToAction("Index");
+
+            //return View(newProject);
         }
 
         // GET: NewProjects/Edit/5

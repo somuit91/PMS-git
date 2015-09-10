@@ -892,6 +892,7 @@ legend + .control-group {
   width: 160px;
   padding-top: 5px;
   text-align: right;
+  padding-left: 50px;
 }
 
 .form-horizontal .controls {
@@ -899,6 +900,7 @@ legend + .control-group {
   *padding-left: 20px;
   margin-left: 180px;
   *margin-left: 0;
+  padding-left: 80px;
 }
 
 .form-horizontal .controls:first-child {
