@@ -92,8 +92,28 @@
 
     <div class="clearfix"></div>
 
+    <div class="container-fluid-full">
+        <div class="row-fluid">
 
-    @RenderBody()
+            <div id="sidebar-left" class="span2">
+                <div class="nav-collapse sidebar-nav">
+                    <ul class="nav nav-tabs nav-stacked main-menu">
+                        <li><a href="@Url.Content("~/NewProjects/Create")"><i class="icon-edit"></i><span class="hidden-tablet"> New Enquiry</span></a></li>
+                        <li><a href="@Url.Content("~/NewProjects/Index")"><i class="icon-tasks"></i><span class="hidden-tablet"> All Enquiry</span></a></li>
+                        <li><a href="@Url.Content("~/VisitReports/Create")"><i class="icon-tasks"></i><span class="hidden-tablet"> New Visits</span></a></li>
+                    </ul>
+                </div>
+            </div>
+
+            @RenderBody()
+        </div>
+    </div>
+    <footer>
+        <p>
+            <span style="text-align:left;float:left">&copy; 2013 <a href="http://jiji262.github.io/Bootstrap_Metro_Dashboard/" alt="Bootstrap_Metro_Dashboard">Bootstrap Metro Dashboard</a></span>
+
+        </p>
+    </footer>
     <!-- start: JavaScript-->
     <script src="@Url.Content("~/Content/js/jquery-1.9.1.min.js")"></script>
     <script src="@Url.Content("~/Content/js/jquery-migrate-1.0.0.min.js")"></script>

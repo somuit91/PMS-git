@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using PMS_API.Models;
+using PMS_API.Helpers;
 
 namespace PMS_API.Controllers
 {
@@ -55,6 +56,7 @@ namespace PMS_API.Controllers
         {
             if (ModelState.IsValid)
             {
+                visitReport.ActionPlanReportUrl = Utilities.saveFile(Request.Files["ActionPlanReportUrl"], db.NewProjects.First(r => r.Id == visitReport.NewProjectId).ProjectName + "\\Visits\\" + visitReport.VisitedOn.Replace('/', '-'));
                 db.VisitReports.Add(visitReport);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");

@@ -10,7 +10,7 @@ using System.Web.Mvc;
 using PMS_API.Models;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
-
+using PMS_API.Helpers;
 namespace PMS_API.Controllers
 {
     public class NewProjectsController : Controller
@@ -64,29 +64,29 @@ namespace PMS_API.Controllers
                 {
                     NewProject newProject = new NewProject()
                     {
-                        AnalysisUrl = model.saveFile(Request.Files["AnalysisUrl"], model.ProjectName + "\\Analysis"),
+                        AnalysisUrl =Utilities.saveFile(Request.Files["AnalysisUrl"], model.ProjectName + "\\Analysis"),
                         ApplicationsId = model.ApplicationsId,
                         ArchitectId = model.ArchitectId,
-                        AreaPanelCalculationUrl = model.saveFile(Request.Files["AreaPanelCalculationUrl"], model.ProjectName + "\\AreaPanelCalculation"),
-                        BOQUrl = model.saveFile(Request.Files["BOQUrl"], model.ProjectName + "\\BOQ"),
+                        AreaPanelCalculationUrl = Utilities.saveFile(Request.Files["AreaPanelCalculationUrl"], model.ProjectName + "\\AreaPanelCalculation"),
+                        BOQUrl = Utilities.saveFile(Request.Files["BOQUrl"], model.ProjectName + "\\BOQ"),
                         BusinessPartnerId = model.BusinessPartnerId,
                         City = model.City,
                         CommencedOn = model.CommencedOn.ToShortDateString(),
-                        ConceptsDrawingUrl = model.saveFile(Request.Files["ConceptsDrawingUrl"], model.ProjectName + "\\ConceptsDrawing"),
+                        ConceptsDrawingUrl = Utilities.saveFile(Request.Files["ConceptsDrawingUrl"], model.ProjectName + "\\ConceptsDrawing"),
                         ConcludedOn = model.ConcludedOn.ToShortDateString(),
-                        ElevationsUrl = model.saveFile(Request.Files["ElevationsUrl"], model.ProjectName + "\\Elevations"),
+                        ElevationsUrl = Utilities.saveFile(Request.Files["ElevationsUrl"], model.ProjectName + "\\Elevations"),
                         FixingTypeId = model.FixingTypeId,
-                        InteriorUrl = model.saveFile(Request.Files["InteriorUrl"], model.ProjectName + "\\Interior"),
-                        OptimizationUrl = model.saveFile(Request.Files["OptimizationUrl"], model.ProjectName + "\\Optimization"),
+                        InteriorUrl = Utilities.saveFile(Request.Files["InteriorUrl"], model.ProjectName + "\\Interior"),
+                        OptimizationUrl = Utilities.saveFile(Request.Files["OptimizationUrl"], model.ProjectName + "\\Optimization"),
                         OwnerId = model.OwnerId,
-                        PlanUrl = model.saveFile(Request.Files["PlanUrl"], model.ProjectName + "\\Plan"),
+                        PlanUrl = Utilities.saveFile(Request.Files["PlanUrl"], model.ProjectName + "\\Plan"),
                         ProjectName = model.ProjectName,
                         ProjectTypeId = model.ProjectTypeId,
-                        SectionsUrl = model.saveFile(Request.Files["SectionsUrl"], model.ProjectName + "\\Sections"),
-                        ShopDrawingUrl = model.saveFile(Request.Files["ShopDrawingUrl"], model.ProjectName + "\\ShopDrawing"),
+                        SectionsUrl = Utilities.saveFile(Request.Files["SectionsUrl"], model.ProjectName + "\\Sections"),
+                        ShopDrawingUrl = Utilities.saveFile(Request.Files["ShopDrawingUrl"], model.ProjectName + "\\ShopDrawing"),
                         Street = model.Street,
-                        TDImageUrl = model.saveFile(Request.Files["TDImageUrl"], model.ProjectName + "\\TDImage"),
-                        TDRenderImageUrl = model.saveFile(Request.Files["TDRenderImageUrl"], model.ProjectName + "\\TDRenderImage")
+                        TDImageUrl = Utilities.saveFile(Request.Files["TDImageUrl"], model.ProjectName + "\\TDImage"),
+                        TDRenderImageUrl = Utilities.saveFile(Request.Files["TDRenderImageUrl"], model.ProjectName + "\\TDRenderImage")
                     };
                     db.NewProjects.Add(newProject);
                     await db.SaveChangesAsync();

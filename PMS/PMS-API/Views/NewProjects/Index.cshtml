@@ -2,142 +2,105 @@
 @{
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    // Layout = null;
 }
-<link id="bootstrap-style" href="@Url.Content("~/Content/css/bootstrap.min.css")" rel="stylesheet">
-<link href="@Url.Content("~/Content/css/bootstrap-responsive.min.css")" rel="stylesheet">
-<link id="base-style" href="@Url.Content("~/Content/css/style.css")" rel="stylesheet">
-<link id="base-style-responsive" href="@Url.Content("~/Content/css/style-responsive.css")" rel="stylesheet">
-<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&subset=latin,cyrillic-ext,latin-ext' rel='stylesheet' type='text/css'>
+<div id="content" class="span10">
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>
+            <a href="index.html">Home</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li>
+            <i class="icon-edit"></i>
+            <a href="#">All Enquiry</a>
+        </li>
+    </ul>
 
-<div class="container-fluid-full">
-    <div class="row-fluid">
-
-        <!-- start: Content -->
-
-        <div id="sidebar-left" class="span2">
-            <div class="nav-collapse sidebar-nav">
-                <ul class="nav nav-tabs nav-stacked main-menu">
-                    @*<li><a href="form.html"><i class="icon-edit"></i><span class="hidden-tablet"> New Enquiry</span></a></li>
-                        <li><a href="Obs.html"><i class="icon-list-alt"></i><span class="hidden-tablet"> Enquiry Updation</span></a></li>
-                        <li><a href="table.html"><i class="icon-star"></i><span class="hidden-tablet"> All Enquiry </span></a></li>*@
-                    <li><a href="@Url.Content("~/NewProjects/Create")"><i class="icon-edit"></i><span class="hidden-tablet"> New Enquiry</span></a></li>
-                    <li><a href="@Url.Content("~/NewProjects/Index")"><i class="icon-tasks"></i><span class="hidden-tablet"> All Enquiry</span></a></li>
-                </ul>
+    <!--/row-->
+    <div class="row-fluid sortable">
+        <div class="box span12">
+            <div class="box-header" data-original-title="">
+                <h2><i class="halflings-icon edit"></i><span class="break"></span>All Enquiry</h2>
+                <div class="box-icon">
+                    <a href="#" class="btn-setting"><i class="halflings-icon wrench"></i></a>
+                    <a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
+                    <a href="#" class="btn-close"><i class="halflings-icon remove"></i></a>
+                </div>
             </div>
-        </div>
-        <noscript>
-            <div class="alert alert-block span10">
-                <h4 class="alert-heading">Warning!</h4>
-                <p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a> enabled to use this site.</p>
+            @*@using (Html.BeginForm())
+                {     @Html.AntiForgeryToken()*@
+            <div class="box-content">
+
+                <table class="table table-striped table-bordered bootstrap-datatable datatable">
+                    <thead>
+                        <tr>
+                            <th>Owner</th>
+                            <th>Date registered</th>
+                            <th>Customer Name</th>
+                            <th>Priority</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.Owner.FullName)</td>
+                                <td>@Html.DisplayFor(modelItem => item.CommencedOn)</td>
+                                <td>@Html.DisplayFor(modelItem => item.BusinessPartner.FullName)</td>
+                                <td>@Html.DisplayFor(modelItem => item.ProjectType.Name)</td>
+                                <td>@Html.DisplayFor(modelItem => item.ProjectType.Name)</td>
+                                @*<td>@Html.DisplayFor(modelItem => item.CreatedDate)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.CustomerName)</td>
+                                    <td class="center">
+                                        @if (item.Priority == "High Potential")
+                                        {
+                                            <span class="label label-success">@Html.DisplayFor(modelItem => item.Priority)</span>
+                                        }
+                                        else if (item.Priority == "Urgent")
+                                        {
+                                            <span class="label label-important">@Html.DisplayFor(modelItem => item.Priority) </span>
+                                        }
+                                        else if (item.Priority == "Normal")
+                                        {
+                                            <span class="label label-warning">@Html.DisplayFor(modelItem => item.Priority)  </span>
+                                        }
+                                    </td>
+
+                                    <td class="center">
+                                        @if (item.Status == "Created")
+                                        {
+                                            <span class="label label-warning">@Html.DisplayFor(modelItem => item.Status)</span>
+                                        }
+                                        else if (item.Status == "Updated")
+                                        {
+                                            <span class="label label-success">@Html.DisplayFor(modelItem => item.Status)</span>
+                                        }
+
+                                    </td>*@
+
+                                <td class="center">
+                                    <a class="btn btn-info" href="/NewProjects/Edit/@item.Id">
+                                        <i class="halflings-icon white edit"></i>
+                                    </a>
+                                    <a class="btn btn-danger" href="#">
+                                        <i class="halflings-icon white trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+
+
+
+
+                        }
+                    </tbody>
+                </table>
             </div>
-        </noscript>
-        <div id="content" class="span10">
-            <ul class="breadcrumb">
-                <li>
-                    <i class="icon-home"></i>
-                    <a href="index.html">Home</a>
-                    <i class="icon-angle-right"></i>
-                </li>
-                <li>
-                    <i class="icon-edit"></i>
-                    <a href="#">All Enquiry</a>
-                </li>
-            </ul>
+        </div><!--/span-->
 
-            <!--/row-->
-            <div class="row-fluid sortable">
-                <div class="box span12">
-                    <div class="box-header" data-original-title="">
-                        <h2><i class="halflings-icon edit"></i><span class="break"></span>All Enquiry</h2>
-                        <div class="box-icon">
-                            <a href="#" class="btn-setting"><i class="halflings-icon wrench"></i></a>
-                            <a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
-                            <a href="#" class="btn-close"><i class="halflings-icon remove"></i></a>
-                        </div>
-                    </div>
-                    @*@using (Html.BeginForm())
-                        {     @Html.AntiForgeryToken()*@
-                    <div class="box-content">
+    </div><!--/row-->
 
-                        <table class="table table-striped table-bordered bootstrap-datatable datatable">
-                            <thead>
-                                <tr>
-                                    <th>Owner</th>
-                                    <th>Date registered</th>
-                                    <th>Customer Name</th>
-                                    <th>Priority</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model)
-                                {
+</div>
 
-                                    <tr>
-                                        <td>@Html.DisplayFor(modelItem => item.Owner.FullName)</td>
-                                        <td>@Html.DisplayFor(modelItem=>item.CommencedOn)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.BusinessPartner.FullName)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.ProjectType.Name)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.ProjectType.Name)</td>
-                                        @*<td>@Html.DisplayFor(modelItem => item.CreatedDate)</td>
-                                            <td>@Html.DisplayFor(modelItem => item.CustomerName)</td>
-                                            <td class="center">
-                                                @if (item.Priority == "High Potential")
-                                                {
-                                                    <span class="label label-success">@Html.DisplayFor(modelItem => item.Priority)</span>
-                                                }
-                                                else if (item.Priority == "Urgent")
-                                                {
-                                                    <span class="label label-important">@Html.DisplayFor(modelItem => item.Priority) </span>
-                                                }
-                                                else if (item.Priority == "Normal")
-                                                {
-                                                    <span class="label label-warning">@Html.DisplayFor(modelItem => item.Priority)  </span>
-                                                }
-                                            </td>
-
-                                            <td class="center">
-                                                @if (item.Status == "Created")
-                                                {
-                                                    <span class="label label-warning">@Html.DisplayFor(modelItem => item.Status)</span>
-                                                }
-                                                else if (item.Status == "Updated")
-                                                {
-                                                    <span class="label label-success">@Html.DisplayFor(modelItem => item.Status)</span>
-                                                }
-
-                                            </td>*@
-
-                                        <td class="center">
-                                            <a class="btn btn-info" href="/NewProjects/Edit/@item.Id">
-                                                <i class="halflings-icon white edit"></i>
-                                            </a>
-                                            <a class="btn btn-danger" href="#">
-                                                <i class="halflings-icon white trash"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-
-
-
-
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div><!--/span-->
-
-            </div><!--/row-->
-
-        </div><!--/.fluid-container-->
-        <!-- end: Content -->
-    </div><!--/#content.span10-->
-</div><!--/fluid-row-->
-<footer>
-    <p>
-        <span style="text-align:left;float:left">&copy; 2013 <a href="http://jiji262.github.io/Bootstrap_Metro_Dashboard/" alt="Bootstrap_Metro_Dashboard">Bootstrap Metro Dashboard</a></span>
-
-    </p>
-</footer>
