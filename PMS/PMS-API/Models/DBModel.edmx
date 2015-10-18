@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="PMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="PMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Applications">
           <Key>
             <PropertyRef Name="Id" />
@@ -135,6 +135,8 @@
           <Property Name="NewProjectId" Type="int" Nullable="false" />
           <Property Name="ProjectStatusId" Type="int" Nullable="false" />
           <Property Name="ProjectHealthId" Type="int" Nullable="false" />
+          <Property Name="comments" Type="nvarchar(max)" />
+          <Property Name="notes" Type="nvarchar(max)" />
         </EntityType>
         <Association Name="FK_ApplicationsNewProject">
           <End Role="Applications" Type="Self.Applications" Multiplicity="1" />
@@ -343,8 +345,7 @@
             <End Role="ProjectPictures" EntitySet="ProjectPictures" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -502,6 +503,8 @@
           <NavigationProperty Name="ProjectHealth" Relationship="Self.FK_ProjectHealthVisitReport" FromRole="VisitReports" ToRole="ProjectHealths" />
           <NavigationProperty Name="ProjectPictures" Relationship="Self.FK_VisitReportProjectPictures" FromRole="VisitReports" ToRole="ProjectPictures" />
           <NavigationProperty Name="ProjectStatu" Relationship="Self.FK_ProjectStatusVisitReport" FromRole="VisitReports" ToRole="ProjectStatus" />
+          <Property Name="comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_ApplicationsNewProject">
           <End Role="Applications" Type="Self.Application" Multiplicity="1" />
@@ -850,6 +853,8 @@
           <EntitySetMapping Name="VisitReports">
             <EntityTypeMapping TypeName="PMSModel.VisitReport">
               <MappingFragment StoreEntitySet="VisitReports">
+                <ScalarProperty Name="notes" ColumnName="notes" />
+                <ScalarProperty Name="comments" ColumnName="comments" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="VisitedBy" ColumnName="VisitedBy" />
                 <ScalarProperty Name="VisitedOn" ColumnName="VisitedOn" />

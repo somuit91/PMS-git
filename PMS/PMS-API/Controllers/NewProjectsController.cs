@@ -20,7 +20,12 @@ namespace PMS_API.Controllers
         // GET: NewProjects
         public async Task<ActionResult> Index()
         {
-            var newProjects = db.NewProjects.Include(n => n.Application).Include(n => n.Architect).Include(n => n.BusinessPartner).Include(n => n.FixingType).Include(n => n.Owner).Include(n => n.ProjectType);
+            var newProjects = db.NewProjects.Include(n => n.Application)
+                                .Include(n => n.Architect)
+                                .Include(n => n.BusinessPartner)
+                                .Include(n => n.FixingType)
+                                .Include(n => n.Owner)
+                                .Include(n => n.ProjectType).OrderByDescending(r => r.Id);
             return View(await newProjects.ToListAsync());
         }
 
@@ -64,7 +69,7 @@ namespace PMS_API.Controllers
                 {
                     NewProject newProject = new NewProject()
                     {
-                        AnalysisUrl =Utilities.saveFile(Request.Files["AnalysisUrl"], model.ProjectName + "\\Analysis"),
+                        AnalysisUrl = Utilities.saveFile(Request.Files["AnalysisUrl"], model.ProjectName + "\\Analysis"),
                         ApplicationsId = model.ApplicationsId,
                         ArchitectId = model.ArchitectId,
                         AreaPanelCalculationUrl = Utilities.saveFile(Request.Files["AreaPanelCalculationUrl"], model.ProjectName + "\\AreaPanelCalculation"),

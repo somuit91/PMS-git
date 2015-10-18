@@ -27,6 +27,8 @@ namespace PMS_API.Models
         public int NewProjectId { get; set; }
         public int ProjectStatusId { get; set; }
         public int ProjectHealthId { get; set; }
+        public string comments { get; set; }
+        public string notes { get; set; }
     
         public virtual ICollection<Checklist> Checklists { get; set; }
         public virtual NewProject NewProject { get; set; }

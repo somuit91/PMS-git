@@ -52,7 +52,7 @@ namespace PMS_API.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,VisitedBy,VisitedOn,ActionPlanReportUrl,NewProjectId,ProjectStatusId,ProjectHealthId")] VisitReport visitReport)
+        public async Task<ActionResult> Create([Bind(Include = "Id,VisitedBy,VisitedOn,ActionPlanReportUrl,ProjectPicture,NewProjectId,ProjectStatusId,ProjectHealthId,comments,notes")] VisitReport visitReport)
         {
             if (ModelState.IsValid)
             {
@@ -131,6 +131,13 @@ namespace PMS_API.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet, ActionName("visits")]
+        public async Task<ActionResult> Visits(int projectId)
+        {
+            List<VisitReport> visitReport = await db.VisitReports.Where(r => r.NewProjectId == projectId).ToListAsync();
+            ViewBag.visitReport = visitReport;
+            return RedirectToAction("Index");
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)
