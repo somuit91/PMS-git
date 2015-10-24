@@ -136,7 +136,7 @@ namespace PMS_API.Controllers
         {
             List<VisitReport> visitReport = await db.VisitReports.Where(r => r.NewProjectId == projectId).ToListAsync();
             ViewBag.visitReport = visitReport;
-            return RedirectToAction("Index");
+            return RedirectToAction("Visits");
         }
         protected override void Dispose(bool disposing)
         {

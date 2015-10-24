@@ -59,7 +59,7 @@
                                     @{
                                         if (@item.VisitReports.Count > 0)
                                         {
-                                            @Html.ActionLink(item.VisitReports.Count() + " Visits", "visits", "VisitReports", item.VisitReports.FirstOrDefault().NewProjectId)
+                                            @Html.ActionLink(item.VisitReports.Count() + " Visits", "visits", new { Controller = "VisitReports", projectId = item.Id })
                                         }
                                         else
                                         {
